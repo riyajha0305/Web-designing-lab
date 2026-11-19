@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Notes App</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eee7fa;
+    color: #302447;
+    min-height: 100vh;
+}
+
+header {
+    background: #302447;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+main {
+    max-width: 650px;
+    margin: 55px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #756887;
+    margin-bottom: 30px;
+}
+
+.notes-box {
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px #30244715;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 13px;
+    border: 1px solid #d7cce6;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button {
+    background: #76539a;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #51366f;
+}
+
+ul {
+    list-style: none;
+    margin-top: 25px;
+}
+
+li {
+    background: #f5f1fa;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    overflow-wrap: anywhere;
+}
+
+.delete {
+    background: #b45e78;
+    padding: 7px 12px;
+    flex-shrink: 0;
+}
+
+.empty {
+    text-align: center;
+    color: #958ba1;
+    margin-top: 25px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #756887;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav a {
+        margin: 0 8px;
+    }
+
+    .input-area {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>My Notes</h2>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#notes">Notes</a>
+    </nav>
+</header>
+
+<main id="home">
+    <h1>My Notes</h1>
+    <p class="subtitle">Write down your thoughts and reminders.</p>
+
+    <div class="notes-box" id="notes">
+        <div id="root"></div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 My Notes App | Web Designing Lab</p>
+</footer>
+
+<!-- React Libraries -->
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+
+function NotesApp() {
+    const [note, setNote] = React.useState("");
+    const [notes, setNotes] = React.useState([]);
+
+    function addNote() {
+        if (note.trim() === "") {
+            alert("Please enter a note!");
+            return;
+        }
+
+        setNotes([...notes, note.trim()]);
+        setNote("");
+    }
+
+    function deleteNote(index) {
+        setNotes(notes.filter((item, i) => i !== index));
+    }
+
+    return (
+        <div>
+            <div className="input-area">
+                <input
+                    type="text"
+                    placeholder="Write a note..."
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") addNote();
+                    }}
+                />
+
+                <button onClick={addNote}>Add Note</button>
+            </div>
+
+            {notes.length === 0 ? (
+                <p className="empty">No notes yet. Add your first note!</p>
+            ) : (
+                <ul>
+                    {notes.map((item, index) => (
+                        <li key={index}>
+                            <span>{item}</span>
+                            <button
+                                className="delete"
+                                onClick={() => deleteNote(index)}
+                            >
+                                Delete
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById("root"))
+    .render(<NotesApp />);
+
+</script>
+
+</body>
+</html>
