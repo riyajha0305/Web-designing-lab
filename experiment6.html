@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Daily Journal | Blog</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #faf8ff;
+    color: #302447;
+    line-height: 1.6;
+}
+
+header {
+    background: #302447;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h2 {
+    letter-spacing: 1px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    color: #d8bfff;
+}
+
+.hero {
+    background: #eee7fa;
+    padding: 60px 8%;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #625970;
+}
+
+section {
+    padding: 55px 8%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #493260;
+    font-size: 29px;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.post {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px #00000010;
+}
+
+.post img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+}
+
+.post-content {
+    padding: 20px;
+}
+
+.category {
+    color: #8059a5;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.post h3 {
+    margin: 8px 0;
+    color: #493260;
+}
+
+.post p {
+    color: #625970;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    color: #76539a;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.about {
+    background: #f0ebf7;
+    text-align: center;
+}
+
+.about p {
+    max-width: 700px;
+    margin: auto;
+    color: #625970;
+}
+
+.newsletter {
+    text-align: center;
+}
+
+.newsletter input {
+    padding: 12px;
+    width: 260px;
+    border: 1px solid #d7cce6;
+    border-radius: 7px;
+    margin: 10px;
+}
+
+.newsletter button {
+    padding: 12px 22px;
+    background: #76539a;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+footer {
+    background: #302447;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+@media(max-width: 900px) {
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    header {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    nav a {
+        margin: 0 7px;
+        font-size: 13px;
+    }
+
+    .hero h1 {
+        font-size: 31px;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .newsletter input {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>The Daily Journal</h2>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#blog">Articles</a>
+        <a href="#about">About</a>
+        <a href="#newsletter">Subscribe</a>
+    </nav>
+</header>
+
+<main>
+
+<div class="hero" id="home">
+    <h1>Stories Worth Reading</h1>
+    <p>Ideas, inspiration and everyday experiences — all in one place.</p>
+</div>
+
+<section id="blog">
+    <h2 class="section-title">Latest Articles</h2>
+
+    <div class="blog-grid">
+
+        <article class="post">
+            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=700"
+                 alt="Notebook and laptop on a desk">
+            <div class="post-content">
+                <span class="category">Lifestyle</span>
+                <h3>Building Better Daily Habits</h3>
+                <p>Small positive habits can make a big difference in everyday life. Learn how to build a better routine.</p>
+                <a href="#about" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+        <article class="post">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700"
+                 alt="Laptop displaying a programming workspace">
+            <div class="post-content">
+                <span class="category">Technology</span>
+                <h3>The World of Web Design</h3>
+                <p>Discover how websites are designed using creativity, technology, HTML and CSS.</p>
+                <a href="#about" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+        <article class="post">
+            <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700"
+                 alt="Sunrise over a peaceful landscape">
+            <div class="post-content">
+                <span class="category">Travel</span>
+                <h3>Finding Beauty in Nature</h3>
+                <p>Take a moment to explore peaceful places and appreciate the beauty of the natural world.</p>
+                <a href="#about" class="read-more">Read More →</a>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<section class="about" id="about">
+    <h2 class="section-title">About Our Blog</h2>
+    <p>
+        The Daily Journal is a sample responsive blog website created
+        using HTML and CSS. It shares articles about lifestyle,
+        technology and travel. The layout adjusts to different
+        screen sizes for a better reading experience.
+    </p>
+</section>
+
+<section class="newsletter" id="newsletter">
+    <h2 class="section-title">Stay Updated</h2>
+    <p>Subscribe to receive updates about our latest articles.</p>
+
+    <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+    </form>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2026 The Daily Journal | Web Designing Lab</p>
+</footer>
+
+</body>
+</html>
