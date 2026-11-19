@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather App</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eee7fa;
+    color: #302447;
+    min-height: 100vh;
+}
+
+header {
+    background: #302447;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+main {
+    max-width: 650px;
+    margin: 55px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #756887;
+    margin-bottom: 30px;
+}
+
+.weather-box {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 5px 20px #30244715;
+}
+
+.search-area {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    padding: 13px;
+    border: 1px solid #d7cce6;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button {
+    background: #76539a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #51366f;
+}
+
+#weatherResult {
+    margin-top: 30px;
+}
+
+.weather-icon {
+    font-size: 65px;
+    margin: 10px;
+}
+
+.temperature {
+    font-size: 48px;
+    font-weight: bold;
+    color: #76539a;
+}
+
+.city {
+    font-size: 25px;
+    margin: 8px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-around;
+    background: #f5f1fa;
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.details p {
+    color: #756887;
+    margin-bottom: 5px;
+}
+
+#message {
+    margin-top: 18px;
+    color: #76539a;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #756887;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav a {
+        margin: 0 8px;
+    }
+
+    .search-area {
+        flex-direction: column;
+    }
+
+    .details {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>Weather Now</h2>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#weather">Check Weather</a>
+    </nav>
+</header>
+
+<main id="home">
+    <h1>Weather Forecast</h1>
+    <p class="subtitle">Find out the weather in your city.</p>
+
+    <div class="weather-box" id="weather">
+        <div class="search-area">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button onclick="getWeather()">Search</button>
+        </div>
+
+        <div id="message">Enter a city to check its weather.</div>
+        <div id="weatherResult"></div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Weather Now | Web Designing Lab</p>
+</footer>
+
+<script>
+async function getWeather() {
+    let city = document.getElementById("cityInput").value.trim();
+    let message = document.getElementById("message");
+    let result = document.getElementById("weatherResult");
+
+    if (city === "") {
+        message.textContent = "Please enter a city name.";
+        result.innerHTML = "";
+        return;
+    }
+
+    message.textContent = "Fetching weather details...";
+    result.innerHTML = "";
+
+    try {
+        // Get city coordinates using Geocoding API
+        let geoResponse = await fetch(
+            "https://geocoding-api.open-meteo.com/v1/search?name=" +
+            encodeURIComponent(city) + "&count=1&language=en&format=json"
+        );
+
+        if (!geoResponse.ok) {
+            throw new Error("Unable to search for the city.");
+        }
+
+        let geoData = await geoResponse.json();
+
+        if (!geoData.results || geoData.results.length === 0) {
+            throw new Error("City not found. Please try another name.");
+        }
+
+        let place = geoData.results[0];
+        let latitude = place.latitude;
+        let longitude = place.longitude;
+
+        // Get weather details using Fetch API
+        let weatherResponse = await fetch(
+            "https://api.open-meteo.com/v1/forecast?latitude=" +
+            latitude + "&longitude=" + longitude +
+            "&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m"
+        );
+
+        if (!weatherResponse.ok) {
+            throw new Error("Unable to fetch weather information.");
+        }
+
+        let weatherData = await weatherResponse.json();
+        let current = weatherData.current;
+
+        let weatherInfo = getWeatherInfo(current.weather_code);
+
+        message.textContent = "Weather information found!";
+
+        result.innerHTML = `
+            <div class="weather-icon">${weatherInfo.icon}</div>
+            <div class="city">${place.name}, ${place.country}</div>
+            <p>${weatherInfo.description}</p>
+            <div class="temperature">${current.temperature_2m}°C</div>
+
+            <div class="details">
+                <div>
+                    <p>Feels Like</p>
+                    <strong>${current.apparent_temperature}°C</strong>
+                </div>
+                <div>
+                    <p>Humidity</p>
+                    <strong>${current.relative_humidity_2m}%</strong>
+                </div>
+                <div>
+                    <p>Wind Speed</p>
+                    <strong>${current.wind_speed_10m} km/h</strong>
+                </div>
+            </div>
+        `;
+
+    } catch (error) {
+        message.textContent = error.message;
+    }
+}
+
+function getWeatherInfo(code) {
+    if (code === 0) return {icon: "☀️", description: "Clear Sky"};
+    if (code <= 3) return {icon: "⛅", description: "Partly Cloudy"};
+    if (code <= 48) return {icon: "🌫️", description: "Foggy"};
+    if (code <= 67) return {icon: "🌧️", description: "Rainy"};
+    if (code <= 77) return {icon: "❄️", description: "Snowy"};
+    if (code <= 82) return {icon: "🌦️", description: "Rain Showers"};
+    if (code <= 86) return {icon: "🌨️", description: "Snow Showers"};
+    return {icon: "⛈️", description: "Thunderstorm"};
+}
+
+document.getElementById("cityInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        getWeather();
+    }
+});
+</script>
+
+</body>
+</html>
